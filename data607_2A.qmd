@@ -1,0 +1,20 @@
+---
+title: "2A SQL & R Deliverable"
+author: "Desiree Thomas"
+format: html
+editor: visual
+---
+
+
+## Approach
+
+Data is a highly value asset and used by virtually all companies. This data is often used by streaming services such as Netflix, Youtube, HBO Max, Paramount+, and many more. Compare your experiences with these streaming services vs. your experience with cable TV. I am going to develop my business approach/question further: https://arxiv.org/pdf/1609.02451. 
+
+We are being asked to create the dataset that will later be used for a recommender system. I chose these 6 recent popular movies: 'Deadpool & Wolverine'(2024), 'Dune: Part 2' (2024), 'Barbie' (2023), 'Oppenheimer' (2023), 'Spider-Man: Across the Spider-Verse (2023). The process and strategy used in this first part of the assignment will hopefully lead to the college program I work for being better able to randomly anticipate what the students may wish to watch or which movies to suggest when sending out forms for students to select what they would like to watch from a list of movies. This encourages them to show up for events, shows student participation, helps maintain student- staff connection and hopefully improves their connection to the campus, which students often self-report as 'low' (often observed at commuter campuses). 
+
+
+For this assignment, I chose to generate synthetic data. This data will consist of approximately 80 'students' and their ratings. It is important to note that because this is synthetic data, I was careful to have Gemini (or any other LLM) generate data that included blanks. Not all students are likely to have seen all films, though I did have the data account for film students who tend to be movie buffs. There are some 'staff' data sprinkled in to add potential range in 'age' and background. Synthetic data was also used to "buff up" the numbers of 'users' for the future recommender system. Due to this being a portfolio level assignment, I have also added 'Account IDs' since streaming services use similar items to track and personalization their services to both individuals and accounts. Geographic data and ages would be interesting to add as well but I think I will stick with the basics and gain comfort working with both a new programming language and software. 
+
+The data will be stored as a CSV and then transferred to PostGres. I anticipate that loading the data and turning the blanks into NULLS will present a challenge for me due to my limited knowledge of both R and SQL. I will also have to take care with formatting. With some research i have realized that SQL is normally used with Normalization but R needs a single dataframe (Denormalized) or even a matrix format. I will have to work through making JOIN queries in SQL before I can pull it into R. 
+
+As I work through this project, I know that my approach will need to change. The outline I have set above is not final and is subject to change. 
