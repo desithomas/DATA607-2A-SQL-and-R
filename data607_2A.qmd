@@ -13,7 +13,9 @@ We are being asked to create the dataset that will later be used for a recommend
 
 I also generated an Account and Profile ID's due to personal experience of using YouTube and Netflix, etc. There one Account may have multiple users. I know that they need ways to track their users in order to suggest recommendations and tailor their users experience. This turned out to be related to Normalization, which was an optional feature of the homework assignment.
 
-I ensured that movies whose ratings were blank, were not deleted. Instead they were changed to NULLS/NA. Theoretically, there would be nothing to recommend if the data only contained movies that they ahd already seen. Perhaps, it would default to the movies that users rated the highest to encourage them to 'Watch Again'?
+I ensured that movies whose ratings were blank, were not deleted. Instead they were changed to NULLS/NA. Theoretically, there would be nothing to recommend if the data only contained movies that they had already seen. Perhaps, it would default to the movies that users rated the highest to encourage them to 'Watch Again'?
+
+I connected RStudio/R to the databse using DBI and RPostgres to ensure that the database is secure and password protected. I used LEFT JOINS in SQL within the queries so I could keep the NULL values. I also used the tidyverse library, to calculte the user and movie metrics. 
 
 ## Package Install
 
