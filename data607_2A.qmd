@@ -15,7 +15,7 @@ I also generated an Account and Profile ID's due to personal experience of using
 
 I ensured that movies whose ratings were blank, were not deleted. Instead they were changed to NULLS/NA. Theoretically, there would be nothing to recommend if the data only contained movies that they had already seen. Perhaps, it would default to the movies that users rated the highest to encourage them to 'Watch Again'?
 
-I connected RStudio/R to the databse using DBI and RPostgres to ensure that the database is secure and password protected. I used LEFT JOINS in SQL within the queries so I could keep the NULL values. I also used the tidyverse library, to calculte the user and movie metrics. 
+I connected RStudio/R to the databse using DBI and RPostgres to ensure that the database is secure and password protected. I used LEFT JOINS in SQL within the queries so I could keep the NULL values. I also used the tidyverse library, to calculte the user and movie metrics.
 
 ## Package Install
 
@@ -38,7 +38,7 @@ con <- dbConnect(RPostgres::Postgres(),
                  host = "localhost", 
                  port = 5432,
                  user = "postgres",
-                 password = "pijza3-havkud-dewTef") #This is a false password
+                 password = "******") #This is a false password
 
 ```
 
