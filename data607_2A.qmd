@@ -17,46 +17,4 @@ The data will be stored as a CSV and then transferred to PostGres. I anticipate 
 
 As I work through this project, I know that my approach will need to change. The outline I have set above is not final and is subject to change.
 
-##LLM Prompt and Transcript
 
-My prompt: I must have a problem within the csv file. it says that account id is an integer but the expression is a text
-
-
-
-movie_ratings=# INSERT INTO profiles
-
-movie_ratings-# SELECT DISTINCT account_id, profile_name
-
-movie_ratings-# FROM staging_ratings;
-
-ERROR:  column "account_id" is of type integer but expression is of type text
-
-LINE 2: SELECT DISTINCT account_id, profile_name
-This error is happening because of a "Square Peg in a Round Hole" problem.
-
-You have two issues happening at once here.
-
-Issue 1: The "Bucket" (Missing Columns)
-Look at your command: INSERT INTO profiles
-
-You didn't tell Postgres which columns you want to fill. When you leave that blank, Postgres tries to stuff your data into the very first column of the table.
-
-The Problem: The first column of profiles is likely your profile_id (the one that is supposed to auto-number itself). You don't want to touch that! You want to fill the second and third columns.
-
-Issue 2: The "Shape" (Type Mismatch)
-The error expression is of type text confirms that your staging_ratings table thinks account_id is just a string of text (like "6000"), but your profiles table requires an actual Number (6000).
-
-The Fix
-You need to modify your command to do two things:
-
-Specify the Target: Tell the INSERT line exactly which columns to fill: (account_id, profile_name).
-
-Cast the Data: Tell the SELECT line to convert the text into a number on the fly using the casting operator: ::INTEGER.
-
-Your Task: Rewrite your query with those two changes.
-
-Hint for line 1: INSERT INTO profiles (column1, column2)
-
-Hint for line 2: SELECT DISTINCT account_id::INTEGER, ...
-
-Give that a try and let me know if it works!
