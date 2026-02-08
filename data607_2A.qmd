@@ -38,7 +38,7 @@ con <- dbConnect(RPostgres::Postgres(),
                  host = "localhost", 
                  port = 5432,
                  user = "postgres",
-                 password = "******") #This is a false password
+                 password = "pijza3-havkud-dewTe") #This is a false password
 
 ```
 
@@ -109,6 +109,12 @@ print(count_users)
 dbDisconnect(con)
 
 ```
+
+## Results
+
+The data contained a total of 450 rows.
+
+*Barbie* had the highest average score but had the lowest count of ratings with only 36 in comparison to *Deadpool & Wolverine* which had the highest number of ratings while holding the lowest average score.
 
 #LLM Prompt
 
