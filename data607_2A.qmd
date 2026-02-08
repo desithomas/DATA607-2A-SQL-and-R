@@ -9,13 +9,11 @@ editor: visual
 
 Data is a highly value asset and used by virtually all companies. This data is often used by streaming services such as Netflix, Youtube, HBO Max, Paramount+, and many more. Compare your experiences with these streaming services vs. your experience with cable TV. I am going to develop my business approach/question further: https://arxiv.org/pdf/1609.02451.
 
-We are being asked to create the dataset that will later be used for a recommender system. I chose these 6 recent popular movies: 'Deadpool & Wolverine'(2024), 'Dune: Part 2' (2024), 'Barbie' (2023), 'Oppenheimer' (2023), 'Spider-Man: Across the Spider-Verse (2023). The process and strategy used in this first part of the assignment will hopefully lead to the college program I work for being better able to randomly anticipate what the students may wish to watch or which movies to suggest when sending out forms for students to select what they would like to watch from a list of movies. This encourages them to show up for events, shows student participation, helps maintain student- staff connection and hopefully improves their connection to the campus, which students often self-report as 'low' (often observed at commuter campuses).
+We are being asked to create the dataset that will later be used for a recommender system. I chose these 6 recent popular movies: 'Deadpool & Wolverine'(2024), 'Dune: Part 2' (2024), 'Barbie' (2023), 'Oppenheimer' (2023), 'Spider-Man: Across the Spider-Verse (2023). For this assignment, I chose to generate synthetic data and in a higher number than required. The guidelines for this required only 5 users, however, since this setup will be used for a future recommender system, I realized I would need more data if I were to find relevant patterns.
 
-For this assignment, I chose to generate synthetic data. This data will consist of approximately 80 'students' and their ratings. It is important to note that because this is synthetic data, I was careful to have Gemini (or any other LLM) generate data that included blanks. Not all students are likely to have seen all films, though I did have the data account for film students who tend to be movie buffs. There are some 'staff' data sprinkled in to add potential range in 'age' and background. Synthetic data was also used to "buff up" the numbers of 'users' for the future recommender system. Due to this being a portfolio level assignment, I have also added 'Account IDs' since streaming services use similar items to track and personalization their services to both individuals and accounts. Geographic data and ages would be interesting to add as well but I think I will stick with the basics and gain comfort working with both a new programming language and software.
+I also generated an Account and Profile ID's due to personal experience of using YouTube and Netflix, etc. There one Account may have multiple users. I know that they need ways to track their users in order to suggest recommendations and tailor their users experience. This turned out to be related to Normalization, which was an optional feature of the homework assignment.
 
-The data will be stored as a CSV and then transferred to PostGres. I anticipate that loading the data and turning the blanks into NULLS will present a challenge for me due to my limited knowledge of both R and SQL. I will also have to take care with formatting. With some research i have realized that SQL is normally used with Normalization but R needs a single dataframe (Denormalized) or even a matrix format. I will have to work through making JOIN queries in SQL before I can pull it into R.
-
-As I work through this project, I know that my approach will need to change. The outline I have set above is not final and is subject to change.
+I ensured that movies whose ratings were blank, were not deleted. Instead they were changed to NULLS/NA. Theoretically, there would be nothing to recommend if the data only contained movies that they ahd already seen. Perhaps, it would default to the movies that users rated the highest to encourage them to 'Watch Again'?
 
 ## Package Install
 
@@ -38,10 +36,12 @@ con <- dbConnect(RPostgres::Postgres(),
                  host = "localhost", 
                  port = 5432,
                  user = "postgres",
-                 password = rstudioapi::askForPassword("Database Password"))
+                 password = "pijza3-havkud-dewTef") #This is a false password
 
 ```
+
 #Getting the Data
+
 ```{r}
 
 
@@ -60,7 +60,9 @@ print(head(df))
 
 
 ```
-#Analyzing the data 
+
+#Analyzing the data
+
 ```{r}
 #Homework Analysis chunk
 
@@ -68,19 +70,22 @@ print(head(df))
 movie_watchers_analysis <- df %>% group_by(profile_name) %>% 
   summarise(
     movies_rated = sum(!is.na(rating)), 
-    total_watched = n()
+    movies_not_watched = sum(is.na(rating)),
+    total_watched_and_not_watched = n()
 ) %>% 
   arrange(desc(movies_rated))
+
 print("Ranking The Users")
 print(movie_watchers_analysis)
 
 movie_stats <- df %>% 
-  group_by(title)%>%
+  group_by(title) %>%
   summarise(
     average_score = mean(rating, na.rm = TRUE), 
     count = sum(!is.na(rating))
   ) %>% 
   arrange(desc(average_score))
+
 print("Ranking The Movies")
 print(movie_stats)
 
@@ -99,15 +104,9 @@ print("Ratings Per User")
 print(count_users)
   
 
-#Movies
+dbDisconnect(con)
 
 ```
-
-
-
-
-
-
 
 #LLM Prompt
 
@@ -143,8 +142,6 @@ Your Challenge: I want you to write the connection code.
 
 Security Tip: Instead of typing your password in quotes (which is unsafe), use this function: rstudioapi::askForPassword("Enter Password"). This forces R to pop up a secure window.
 
-Try writing the con <- dbConnect(...) block in your script. Paste what you have here so I can check it.
+Try writing the con \<- dbConnect(...) block in your script. Paste what you have here so I can check it.
 
-#LLM Citation
-Google DeepMind. (2025). Gemini 3 Pro. [Large Language model]. 
-https://gemini.google.com. Acessed February 7, 2026. 
+#LLM Citation Google DeepMind. (2025). Gemini 3 Pro. \[Large Language model\]. https://gemini.google.com. Acessed February 7, 2026.
