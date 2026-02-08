@@ -1,13 +1,14 @@
 ---
 title: "2A SQL & R Deliverable"
 author: "Desiree Thomas"
-format: html
-editor: visual
+date: "2026-02-08"
+format: 
+  html:
+    embed-resources: true
+editor: source
 ---
 
-## Approach
-
-Data is a highly value asset and used by virtually all companies. This data is often used by streaming services such as Netflix, Youtube, HBO Max, Paramount+, and many more. Compare your experiences with these streaming services vs. your experience with cable TV. I am going to develop my business approach/question further: https://arxiv.org/pdf/1609.02451.
+Data is a highly value asset and used by virtually all companies. This data is often used by streaming services such as Netflix, YouTube, HBO Max, Paramount+, and many more. Compare your experiences with these streaming services vs. your experience with cable TV. I am going to develop my business approach/question further: https://arxiv.org/pdf/1609.02451.
 
 We are being asked to create the dataset that will later be used for a recommender system. I chose these 6 recent popular movies: 'Deadpool & Wolverine'(2024), 'Dune: Part 2' (2024), 'Barbie' (2023), 'Oppenheimer' (2023), 'Spider-Man: Across the Spider-Verse (2023). For this assignment, I chose to generate synthetic data and in a higher number than required. The guidelines for this required only 5 users, however, since this setup will be used for a future recommender system, I realized I would need more data if I were to find relevant patterns.
 
@@ -15,14 +16,12 @@ I also generated an Account and Profile ID's due to personal experience of using
 
 I ensured that movies whose ratings were blank, were not deleted. Instead they were changed to NULLS/NA. Theoretically, there would be nothing to recommend if the data only contained movies that they had already seen. Perhaps, it would default to the movies that users rated the highest to encourage them to 'Watch Again'?
 
-I connected RStudio/R to the databse using DBI and RPostgres to ensure that the database is secure and password protected. I used LEFT JOINS in SQL within the queries so I could keep the NULL values. I also used the tidyverse library, to calculte the user and movie metrics.
+I connected RStudio/R to the database using DBI and RPostgres to ensure that the database is secure and password protected. I used LEFT JOINS in SQL within the queries so I could keep the NULL values. I also used the tidyverse library, to calculate the user and movie metrics.
 
-## Package Install
-
+##Package Installation
 Install these packages if you do not already have them: "DBI", "RPostgres", "tidyverse", "rstudioapi"
 
-## Load Packages
-
+##Load Packages
 ```{r}
 library(DBI)
 library(RPostgres)
@@ -30,24 +29,19 @@ library(tidyverse)
 library(rstudioapi)
 ```
 
-#Set up Postgres connection:
-
+##Set Up Connection
 ```{r}
 con <- dbConnect(RPostgres::Postgres(),
                  dbname = "movie_ratings",
                  host = "localhost", 
                  port = 5432,
                  user = "postgres",
-                 password = "pijza3-havkud-dewTe") #This is a false password
+                 password = "pijza3-havkud-dewTef") #This is a false password
 
 ```
 
-#Getting the Data
-
+#Getting the Data 
 ```{r}
-
-
-
 SQL_query <- "
   SELECT  p.profile_name, m.title,r.rating
   FROM ratings r
@@ -57,14 +51,10 @@ SQL_query <- "
 df <- dbGetQuery(con, SQL_query)
 
 print(head(df))
-
-
-
-
 ```
 
-#Analyzing the data
 
+##Analyzing the Data
 ```{r}
 #Homework Analysis chunk
 
@@ -107,14 +97,15 @@ print(count_users)
   
 
 dbDisconnect(con)
-
 ```
 
-## Results
+#LLM Transcript
+
+Results
 
 The data contained a total of 450 rows.
 
-*Barbie* had the highest average score but had the lowest count of ratings with only 36 in comparison to *Deadpool & Wolverine* which had the highest number of ratings while holding the lowest average score.
+Barbie had the highest average score but had the lowest count of ratings with only 36 in comparison to Deadpool & Wolverine which had the highest number of ratings while holding the lowest average score.
 
 #LLM Prompt
 
@@ -126,7 +117,7 @@ Why this matters: rstudioapi keeps your password out of the code. This is the "P
 
 R 1. SETUP library(DBI) library(RPostgres) library(tidyverse) library(rstudioapi)
 
-2.  CONNECT When you run this, look for the popup box to type your password. con \<- dbConnect(RPostgres::Postgres(), dbname = "movie_ratings", host = "localhost", port = 5432, user = "postgres", password = rstudioapi::askForPassword("Database Password")) Run Block 1. (Ctrl+Enter).
+CONNECT When you run this, look for the popup box to type your password. con <- dbConnect(RPostgres::Postgres(), dbname = "movie_ratings", host = "localhost", port = 5432, user = "postgres", password = rstudioapi::askForPassword("Database Password")) Run Block 1. (Ctrl+Enter).
 
 Checkpoint: Did the popup appear? Did it run without error?
 
@@ -150,6 +141,6 @@ Your Challenge: I want you to write the connection code.
 
 Security Tip: Instead of typing your password in quotes (which is unsafe), use this function: rstudioapi::askForPassword("Enter Password"). This forces R to pop up a secure window.
 
-Try writing the con \<- dbConnect(...) block in your script. Paste what you have here so I can check it.
+Try writing the con <- dbConnect(...) block in your script. Paste what you have here so I can check it.
 
-#LLM Citation Google DeepMind. (2025). Gemini 3 Pro. \[Large Language model\]. https://gemini.google.com. Acessed February 7, 2026.
+LLM Citation Google DeepMind. (2025). Gemini 3 Pro. [Large Language model]. https://gemini.google.com. Acessed February 7, 2026.
