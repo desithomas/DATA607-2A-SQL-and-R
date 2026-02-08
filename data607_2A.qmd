@@ -17,4 +17,62 @@ The data will be stored as a CSV and then transferred to PostGres. I anticipate 
 
 As I work through this project, I know that my approach will need to change. The outline I have set above is not final and is subject to change.
 
+## Package Install
 
+Install these packages if you do not already have them: "DBI", "RPostgres", "tidyverse", "rstudioapi"
+
+## Load Packages
+
+```{r}
+library(DBI)
+library(RPostgres)
+library(tidyverse)
+library(rstudioapi)
+```
+
+#Set up Postgres connection:
+
+```{r}
+con <- dbConnect(RPostgres::Postgres(),
+                 dbname = "movie_ratings",
+                 host = "localhost", 
+                 port = 5432,
+                 user = "postgres",
+                 password = rstudioapi::askForPassword("Database Password"))
+
+```
+
+```{r}
+
+
+
+SQL_query <- "
+  SELECT  p.profile_name, m.title,r.rating
+  FROM ratings r
+  LEFT JOIN profiles p ON r.profile_id = p.profile_id
+  LEFT JOIN movies m ON r.movie_id = m.movie_id;
+"
+df <- dbGetQuery(con, SQL_query)
+
+print(head(df))
+
+
+```
+
+
+
+
+
+#LLM Prompt
+
+User: I need you to set up the PostGres connection.
+
+LLM: Copy this into your script. This loads your tools and opens the secure tunnel to Postgres.
+
+Why this matters: rstudioapi keeps your password out of the code. This is the "Portfolio Standard."
+
+R 1. SETUP library(DBI) library(RPostgres) library(tidyverse) library(rstudioapi)
+
+2.  CONNECT When you run this, look for the popup box to type your password. con \<- dbConnect(RPostgres::Postgres(), dbname = "movie_ratings", host = "localhost", port = 5432, user = "postgres", password = rstudioapi::askForPassword("Database Password")) Run Block 1. (Ctrl+Enter).
+
+Checkpoint: Did the popup appear? Did it run without error?
