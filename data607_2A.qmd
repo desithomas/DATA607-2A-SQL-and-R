@@ -41,7 +41,7 @@ con <- dbConnect(RPostgres::Postgres(),
                  password = rstudioapi::askForPassword("Database Password"))
 
 ```
-
+#Getting the Data
 ```{r}
 
 
@@ -57,7 +57,53 @@ df <- dbGetQuery(con, SQL_query)
 print(head(df))
 
 
+
+
 ```
+#Analyzing the data 
+```{r}
+#Homework Analysis chunk
+
+
+movie_watchers_analysis <- df %>% group_by(profile_name) %>% 
+  summarise(
+    movies_rated = sum(!is.na(rating)), 
+    total_watched = n()
+) %>% 
+  arrange(desc(movies_rated))
+print("Ranking The Users")
+print(movie_watchers_analysis)
+
+movie_stats <- df %>% 
+  group_by(title)%>%
+  summarise(
+    average_score = mean(rating, na.rm = TRUE), 
+    count = sum(!is.na(rating))
+  ) %>% 
+  arrange(desc(average_score))
+print("Ranking The Movies")
+print(movie_stats)
+
+
+#Count the average ratings per user and movie AND computer average ratings
+
+#Users 
+count_users <- df %>% 
+  group_by(profile_name)%>%
+  summarise(
+    movies_rated = sum(!is.na(rating))
+  ) %>% 
+  arrange(desc(movies_rated))
+
+print("Ratings Per User")
+print(count_users)
+  
+
+#Movies
+
+```
+
+
 
 
 
@@ -76,3 +122,29 @@ R 1. SETUP library(DBI) library(RPostgres) library(tidyverse) library(rstudioapi
 2.  CONNECT When you run this, look for the popup box to type your password. con \<- dbConnect(RPostgres::Postgres(), dbname = "movie_ratings", host = "localhost", port = 5432, user = "postgres", password = rstudioapi::askForPassword("Database Password")) Run Block 1. (Ctrl+Enter).
 
 Checkpoint: Did the popup appear? Did it run without error?
+
+LLM's explanation of code: Think of RStudio and Postgres as two separate buildings. Right now, the doors are locked. We need to build a secure tunnel between them.
+
+We use the DBI library (Database Interface) as the blueprint for the tunnel, and RPostgres as the specific materials for a Postgres tunnel.
+
+The Syntax: To open the tunnel, we use a function called dbConnect(). It needs 5 pieces of ID:
+
+Driver: What kind of database is it? (RPostgres::Postgres())
+
+DB Name: dbname
+
+Host: Where is it? (Usually localhost)
+
+User: Who are you? (postgres)
+
+Password: The key.
+
+Your Challenge: I want you to write the connection code.
+
+Security Tip: Instead of typing your password in quotes (which is unsafe), use this function: rstudioapi::askForPassword("Enter Password"). This forces R to pop up a secure window.
+
+Try writing the con <- dbConnect(...) block in your script. Paste what you have here so I can check it.
+
+#LLM Citation
+Google DeepMind. (2025). Gemini 3 Pro. [Large Language model]. 
+https://gemini.google.com. Acessed February 7, 2026. 
